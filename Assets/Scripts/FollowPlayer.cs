@@ -4,17 +4,22 @@ using System.Collections;
 
 public class FollowPlayer : MonoBehaviour
 {
-    public Transform target;
+    public Transform player;
+    public float m_speed = 0.1f;
+    Camera mycam;
 
-    public float smoothSpeed = 0.125f;
-    public Vector3 offset;
 
-    void FixedUpdate()
+    private void Start()
     {
-        Vector3 desiredPosition = target.position + offset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-        transform.position = smoothedPosition;
-        transform.LookAt(target);
+        mycam = GetComponent<Camera>();
+    }
+    void Update()
+    {
+        mycam.orthographicSize = (Screen.height / 50f ) / 4f;
+        if (player)
+        {
+            transform.position = Vector3.Lerp(transform.position, player.position, m_speed) + new Vector3(0, 0, -10);
+        }
     }
 
 }

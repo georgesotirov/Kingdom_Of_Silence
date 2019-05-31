@@ -4,38 +4,24 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float movementSpeed;
+    public float speed;
+    private Rigidbody2D rb;
+    private Vector2 mv;
 
-    // Use this for initialization
+
     void Start()
     {
-
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    //Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
+        Vector2 mi = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        mv = mi.normalized * speed;
+    }
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey("w"))
-        {
-            transform.position += transform.TransformDirection(Vector3.forward) * Time.deltaTime * movementSpeed * 2.5f;
-        }
-        else if (Input.GetKey("w") && !Input.GetKey(KeyCode.LeftShift))
-        {
-            transform.position += transform.TransformDirection(Vector3.forward) * Time.deltaTime * movementSpeed;
-        }
-        else if (Input.GetKey("s"))
-        {
-            transform.position -= transform.TransformDirection(Vector3.forward) * Time.deltaTime * movementSpeed;
-        }
-
-        if (Input.GetKey("a") && !Input.GetKey("d"))
-        {
-            transform.position += transform.TransformDirection(Vector3.left) * Time.deltaTime * movementSpeed;
-        }
-        else if (Input.GetKey("d") && !Input.GetKey("a"))
-        {
-            transform.position -= transform.TransformDirection(Vector3.left) * Time.deltaTime * movementSpeed;
-        }
+    private void FixedUpdate()
+    {
+        rb.MovePosition(rb.position + mv * Time.fixedDeltaTime);
     }
 }
